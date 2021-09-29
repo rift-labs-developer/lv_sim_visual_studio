@@ -13,9 +13,7 @@ void cctScreen() {
     // lvgl 8 replaced lv_objmask with https://docs.lvgl.io/master/overview/event.html makes no sense
     // add events https://docs.lvgl.io/master/overview/event.html#add-events-to-the-object
     //
-
     lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), 1, LV_FONT_DEFAULT);
-
     lv_obj_t* screen = lv_scr_act();
     //lv_obj_t* topBarPanel = lv_obj_create(screen);
 //lv_obj_t* labelBarPanel = lv_obj_create(screen);

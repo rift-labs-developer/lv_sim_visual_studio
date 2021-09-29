@@ -22,6 +22,7 @@
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="cct_screen.hpp" />
     <ClInclude Include="lvgl\examples\anim\lv_example_anim.h" />
     <ClInclude Include="lvgl\examples\event\lv_example_event.h" />
     <ClInclude Include="lvgl\examples\get_started\lv_example_get_started.h" />

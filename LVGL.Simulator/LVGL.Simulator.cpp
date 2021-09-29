@@ -27,6 +27,9 @@
 #include "lv_drivers/win32drv/win32drv.h"
 #include "lv_lib_freetype/lv_freetype.h"
 
+#include "cct_screen.hpp"
+
+
 #if _MSC_VER >= 1200
 // Restore compilation warnings.
 #pragma warning(pop)
@@ -193,7 +196,7 @@ static lv_fs_res_t lv_win32_filesystem_driver_write_callback(
 
     return WriteFile((HANDLE)file_p, buf, btw, (LPDWORD)bw, NULL)
         ? LV_FS_RES_OK
-        : lv_win32_filesystem_driver_error_from_win32(GetLastError()); 
+        : lv_win32_filesystem_driver_error_from_win32(GetLastError());
 }
 
 static lv_fs_res_t lv_win32_filesystem_driver_seek_callback(
@@ -209,11 +212,11 @@ static lv_fs_res_t lv_win32_filesystem_driver_seek_callback(
     {
         MoveMethod = FILE_BEGIN;
     }
-    else if(whence == LV_FS_SEEK_CUR)
+    else if (whence == LV_FS_SEEK_CUR)
     {
         MoveMethod = FILE_CURRENT;
     }
-    else if(whence == LV_FS_SEEK_END)
+    else if (whence == LV_FS_SEEK_END)
     {
         MoveMethod = FILE_END;
     }
@@ -418,34 +421,34 @@ int main()
      * item.
      */
 
-    // ----------------------------------
-    // my application
-    // ----------------------------------
+     // ----------------------------------
+     // my application
+     // ----------------------------------
 
-    ///*Init freetype library
-    // *Cache max 64 faces and 1 size*/
-    //lv_freetype_init(64, 1, 0);
+     ///*Init freetype library
+     // *Cache max 64 faces and 1 size*/
+     //lv_freetype_init(64, 1, 0);
 
-    ///*Create a font*/
-    //static lv_ft_info_t info;
-    //info.name = "./lv_lib_freetype/arial.ttf";
-    //info.weight = 36;
-    //info.style = FT_FONT_STYLE_NORMAL;
-    //lv_ft_font_init(&info);
+     ///*Create a font*/
+     //static lv_ft_info_t info;
+     //info.name = "./lv_lib_freetype/arial.ttf";
+     //info.weight = 36;
+     //info.style = FT_FONT_STYLE_NORMAL;
+     //lv_ft_font_init(&info);
 
-    ///*Create style with the new font*/
-    //static lv_style_t style;
-    //lv_style_init(&style);
-    //lv_style_set_text_font(&style, info.font);
+     ///*Create style with the new font*/
+     //static lv_style_t style;
+     //lv_style_init(&style);
+     //lv_style_set_text_font(&style, info.font);
 
-    ///*Create a label with the new style*/
-    //lv_obj_t* label = lv_label_create(lv_scr_act());
-    //lv_obj_add_style(label, &style, 0);
-    //lv_label_set_text(label, "FreeType Arial Test");
+     ///*Create a label with the new style*/
+     //lv_obj_t* label = lv_label_create(lv_scr_act());
+     //lv_obj_add_style(label, &style, 0);
+     //lv_label_set_text(label, "FreeType Arial Test");
 
-    // ----------------------------------
-    // Demos from lv_examples
-    // ----------------------------------
+     // ----------------------------------
+     // Demos from lv_examples
+     // ----------------------------------
 
     lv_fs_dir_t d;
     if (lv_fs_dir_open(&d, "/") == LV_FS_RES_OK)
@@ -459,8 +462,8 @@ int main()
 
         lv_fs_dir_close(&d);
     }
-
-    lv_demo_widgets();           // ok
+    cctScreen();
+    //lv_demo_widgets();           // ok
     // lv_demo_benchmark();
     // lv_demo_keypad_encoder();    // ok
     // lv_demo_music();             // removed from repository
@@ -477,141 +480,141 @@ int main()
      * Look in that directory to find all the rest.
      */
 
-    // lv_ex_get_started_1();
-    // lv_ex_get_started_2();
-    // lv_ex_get_started_3();
+     // lv_ex_get_started_1();
+     // lv_ex_get_started_2();
+     // lv_ex_get_started_3();
 
-    // lv_example_flex_1();
-    // lv_example_flex_2();
-    // lv_example_flex_3();
-    // lv_example_flex_4();
-    // lv_example_flex_5();
-    // lv_example_flex_6();        // ok
+     // lv_example_flex_1();
+     // lv_example_flex_2();
+     // lv_example_flex_3();
+     // lv_example_flex_4();
+     // lv_example_flex_5();
+     // lv_example_flex_6();        // ok
 
-    // lv_example_grid_1();
-    // lv_example_grid_2();
-    // lv_example_grid_3();
-    // lv_example_grid_4();
-    // lv_example_grid_5();
-    // lv_example_grid_6();
+     // lv_example_grid_1();
+     // lv_example_grid_2();
+     // lv_example_grid_3();
+     // lv_example_grid_4();
+     // lv_example_grid_5();
+     // lv_example_grid_6();
 
-    // lv_port_disp_template();
-    // lv_port_fs_template();
-    // lv_port_indev_template();
+     // lv_port_disp_template();
+     // lv_port_fs_template();
+     // lv_port_indev_template();
 
-    // lv_example_scroll_1();
-    // lv_example_scroll_2();
-    // lv_example_scroll_3();
+     // lv_example_scroll_1();
+     // lv_example_scroll_2();
+     // lv_example_scroll_3();
 
-    // lv_example_style_1();
-    // lv_example_style_2();
-    // lv_example_style_3();
-    // lv_example_style_4();        // ok
-    // lv_example_style_6();        // file has no source code
-    // lv_example_style_7();
-    // lv_example_style_8();
-    // lv_example_style_9();
-    // lv_example_style_10();
-    // lv_example_style_11();       // ok
+     // lv_example_style_1();
+     // lv_example_style_2();
+     // lv_example_style_3();
+     // lv_example_style_4();        // ok
+     // lv_example_style_6();        // file has no source code
+     // lv_example_style_7();
+     // lv_example_style_8();
+     // lv_example_style_9();
+     // lv_example_style_10();
+     // lv_example_style_11();       // ok
 
-    // ----------------------------------
-    // LVGL widgets examples
-    // ----------------------------------
+     // ----------------------------------
+     // LVGL widgets examples
+     // ----------------------------------
 
-    // lv_example_arc_1();
-    // lv_example_arc_2();
+     // lv_example_arc_1();
+     // lv_example_arc_2();
 
-    // lv_example_bar_1();          // ok
-    // lv_example_bar_2();
-    // lv_example_bar_3();
-    // lv_example_bar_4();
-    // lv_example_bar_5();
-    // lv_example_bar_6();          // issues
+     // lv_example_bar_1();          // ok
+     // lv_example_bar_2();
+     // lv_example_bar_3();
+     // lv_example_bar_4();
+     // lv_example_bar_5();
+     // lv_example_bar_6();          // issues
 
-    // lv_example_btn_1();
-    // lv_example_btn_2();
-    // lv_example_btn_3();
+     // lv_example_btn_1();
+     // lv_example_btn_2();
+     // lv_example_btn_3();
 
-    // lv_example_btnmatrix_1();
-    // lv_example_btnmatrix_2();
-    // lv_example_btnmatrix_3();
+     // lv_example_btnmatrix_1();
+     // lv_example_btnmatrix_2();
+     // lv_example_btnmatrix_3();
 
-    // lv_example_calendar_1();
+     // lv_example_calendar_1();
 
-    // lv_example_canvas_1();
-    // lv_example_canvas_2();
+     // lv_example_canvas_1();
+     // lv_example_canvas_2();
 
-    // lv_example_chart_1();        // ok
-    // lv_example_chart_2();        // ok
-    // lv_example_chart_3();        // ok
-    // lv_example_chart_4();        // ok
-    // lv_example_chart_5();        // ok
-    // lv_example_chart_6();        // ok
+     // lv_example_chart_1();        // ok
+     // lv_example_chart_2();        // ok
+     // lv_example_chart_3();        // ok
+     // lv_example_chart_4();        // ok
+     // lv_example_chart_5();        // ok
+     // lv_example_chart_6();        // ok
 
-    // lv_example_checkbox_1();
+     // lv_example_checkbox_1();
 
-    // lv_example_colorwheel_1();   // ok
+     // lv_example_colorwheel_1();   // ok
 
-    // lv_example_dropdown_1();
-    // lv_example_dropdown_2();
-    // lv_example_dropdown_3();
+     // lv_example_dropdown_1();
+     // lv_example_dropdown_2();
+     // lv_example_dropdown_3();
 
-    // lv_example_img_1();
-    // lv_example_img_2();
-    // lv_example_img_3();
-    // lv_example_img_4();         // ok
+     // lv_example_img_1();
+     // lv_example_img_2();
+     // lv_example_img_3();
+     // lv_example_img_4();         // ok
 
-    // lv_example_imgbtn_1();
+     // lv_example_imgbtn_1();
 
-    // lv_example_keyboard_1();    // ok
+     // lv_example_keyboard_1();    // ok
 
-    // lv_example_label_1();
-    // lv_example_label_2();       // ok
+     // lv_example_label_1();
+     // lv_example_label_2();       // ok
 
-    // lv_example_led_1();
+     // lv_example_led_1();
 
-    // lv_example_line_1();
+     // lv_example_line_1();
 
-    // lv_example_list_1();
+     // lv_example_list_1();
 
-    // lv_example_meter_1();
-    // lv_example_meter_2();
-    // lv_example_meter_3();
-    // lv_example_meter_4();       // ok
+     // lv_example_meter_1();
+     // lv_example_meter_2();
+     // lv_example_meter_3();
+     // lv_example_meter_4();       // ok
 
-    // lv_example_msgbox_1();
+     // lv_example_msgbox_1();
 
-    // lv_example_obj_1();         // ok
+     // lv_example_obj_1();         // ok
 
-    // lv_example_roller_1();
-    // lv_example_roller_2();      // ok
+     // lv_example_roller_1();
+     // lv_example_roller_2();      // ok
 
-    // lv_example_slider_1();      // ok
-    // lv_example_slider_2();      // issues
-    // lv_example_slider_3();      // issues
+     // lv_example_slider_1();      // ok
+     // lv_example_slider_2();      // issues
+     // lv_example_slider_3();      // issues
 
-    // lv_example_spinbox_1();
+     // lv_example_spinbox_1();
 
-    // lv_example_spinner_1();     // ok
+     // lv_example_spinner_1();     // ok
 
-    // lv_example_switch_1();      // ok
+     // lv_example_switch_1();      // ok
 
-    // lv_example_table_1();
-    // lv_example_table_2();       // ok
+     // lv_example_table_1();
+     // lv_example_table_2();       // ok
 
-    // lv_example_tabview_1();
+     // lv_example_tabview_1();
 
-    // lv_example_textarea_1();    // ok
-    // lv_example_textarea_2();
-    // lv_example_textarea_3();    // ok, but not all button have functions
+     // lv_example_textarea_1();    // ok
+     // lv_example_textarea_2();
+     // lv_example_textarea_3();    // ok, but not all button have functions
 
-    // lv_example_tileview_1();    // ok
+     // lv_example_tileview_1();    // ok
 
-    // lv_example_win_1();         // ok
+     // lv_example_win_1();         // ok
 
-    // ----------------------------------
-    // Task handler loop
-    // ----------------------------------
+     // ----------------------------------
+     // Task handler loop
+     // ----------------------------------
 
     while (!lv_win32_quit_signal)
     {

@@ -3,6 +3,43 @@
 #define MASK_WIDTH 100
 #define MASK_HEIGHT 100
 
+#define HEX_MAIN_COLOR 0xE0DAD5
+#define HEX_SECONDARY_COLOR 0X898481
+
+#define HEX_BACKGROUND_COLOR 0x3d3b39
+
+void drawBrightnessSlider(lv_obj_t* sliderPointer) {
+    //lv_obj_remove_style_all(sliderPointer);
+    const int16_t radius = 10;
+
+    lv_obj_remove_style(sliderPointer, NULL, LV_PART_KNOB);
+    lv_obj_set_size(sliderPointer, 30, 360);
+
+    lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_MAIN); // actually removed the border
+    lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_INDICATOR); // actually removed the border
+
+
+
+    static lv_style_t styleMain;
+    lv_style_init(&styleMain);
+    lv_style_set_bg_color(&styleMain, lv_color_hex(HEX_SECONDARY_COLOR));
+    //lv_style_set_border_width(&styleMain, 0);
+    //lv_style_set_border_width(&styleMain, LV_PART_MAIN);
+    lv_style_set_radius(&styleMain, radius);
+    lv_obj_add_style(sliderPointer, &styleMain, LV_PART_MAIN);
+
+
+    static lv_style_t styleIndicator;
+    lv_style_init(&styleIndicator);
+    lv_style_set_radius(&styleIndicator, radius);
+
+    lv_style_set_bg_color(&styleIndicator, lv_color_hex(HEX_MAIN_COLOR));
+    lv_obj_add_style(sliderPointer, &styleIndicator, LV_PART_INDICATOR);
+
+
+
+
+}
 
 
 void cctScreen() {
@@ -13,11 +50,17 @@ void cctScreen() {
     // lvgl 8 replaced lv_objmask with https://docs.lvgl.io/master/overview/event.html makes no sense
     // add events https://docs.lvgl.io/master/overview/event.html#add-events-to-the-object
     //
+
+
+
     lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), 1, LV_FONT_DEFAULT);
     lv_obj_t* screen = lv_scr_act();
+    lv_obj_set_style_bg_color(screen, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
     //lv_obj_t* topBarPanel = lv_obj_create(screen);
 //lv_obj_t* labelBarPanel = lv_obj_create(screen);
     lv_obj_t* modeAreaPanel = lv_obj_create(screen);
+    lv_obj_set_style_bg_color(modeAreaPanel, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
+    lv_obj_set_style_border_width(modeAreaPanel,0,0); // actually removed the border
 
     lv_obj_set_layout(screen, LV_LAYOUT_GRID);
     lv_obj_set_layout(modeAreaPanel, LV_LAYOUT_GRID);
@@ -47,8 +90,8 @@ void cctScreen() {
 
     // intensity slider
     lv_obj_t* intensitySlider = lv_slider_create(screen);
-    lv_obj_remove_style(intensitySlider, NULL, LV_PART_KNOB);
-    lv_obj_set_size(intensitySlider, 30, 360);
+    drawBrightnessSlider(intensitySlider);
+
 
 
     // Top bar
@@ -79,7 +122,7 @@ void cctScreen() {
     lv_obj_set_grid_cell(modeAreaPanel, LV_GRID_ALIGN_STRETCH, 1, 3, LV_GRID_ALIGN_STRETCH, 1, 1);
 
 
-    static lv_coord_t grid_mode_col_dsc[] = {LV_GRID_FR(7),LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
+    static lv_coord_t grid_mode_col_dsc[] = { LV_GRID_FR(7),LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
     static lv_coord_t grid_mode_row_dsc[] = { LV_GRID_FR(1),LV_GRID_FR(10),LV_GRID_FR(2), LV_GRID_TEMPLATE_LAST };
     lv_obj_set_grid_dsc_array(modeAreaPanel, grid_mode_col_dsc, grid_mode_row_dsc);
     lv_obj_set_grid_cell(arc, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_STRETCH, 1, 1);

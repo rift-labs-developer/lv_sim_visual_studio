@@ -8,20 +8,24 @@
 
 #define HEX_BACKGROUND_COLOR 0x3d3b39
 
+
+static const lv_font_t* font_large;
+static const lv_font_t* font_normal;
+
 void drawBrightnessSlider(lv_obj_t* sliderPointer) {
-    //lv_obj_remove_style_all(sliderPointer);
+    lv_obj_remove_style_all(sliderPointer);
     const int16_t radius = 10;
 
-    lv_obj_remove_style(sliderPointer, NULL, LV_PART_KNOB);
-    lv_obj_set_size(sliderPointer, 30, 360);
-
-    lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_MAIN); // actually removed the border
-    lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_INDICATOR); // actually removed the border
+    //lv_obj_remove_style(sliderPointer, NULL, LV_PART_KNOB);
+    lv_obj_set_size(sliderPointer, 60, 360);
+    //lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_MAIN);
+    //lv_obj_set_style_border_width(sliderPointer, 0, LV_PART_INDICATOR); 
 
 
 
     static lv_style_t styleMain;
     lv_style_init(&styleMain);
+    lv_style_set_bg_opa(&styleMain, LV_OPA_COVER);
     lv_style_set_bg_color(&styleMain, lv_color_hex(HEX_SECONDARY_COLOR));
     //lv_style_set_border_width(&styleMain, 0);
     //lv_style_set_border_width(&styleMain, LV_PART_MAIN);
@@ -33,17 +37,23 @@ void drawBrightnessSlider(lv_obj_t* sliderPointer) {
     lv_style_init(&styleIndicator);
     lv_style_set_radius(&styleIndicator, radius);
 
+    lv_style_set_bg_opa(&styleIndicator, LV_OPA_COVER);
     lv_style_set_bg_color(&styleIndicator, lv_color_hex(HEX_MAIN_COLOR));
     lv_obj_add_style(sliderPointer, &styleIndicator, LV_PART_INDICATOR);
 
 
 
 
+
+    //lv_obj_set_style_outline_width(sliderPointer, 0, 0);
+    //lv_obj_set_style_outline_color(sliderPointer, lv_color_hex(HEX_MAIN_COLOR), LV_PART_INDICATOR);
 }
 
 
 void cctScreen() {
 
+    font_large = &lv_font_montserrat_24;
+    font_normal = &lv_font_montserrat_16;
     // arc gradient
     //https://forum.lvgl.io/t/full-gradient-support-for-primitives/2223/2
     // using masks https://docs.lvgl.io/master/overview/drawing.html#using-masks
@@ -60,7 +70,7 @@ void cctScreen() {
 //lv_obj_t* labelBarPanel = lv_obj_create(screen);
     lv_obj_t* modeAreaPanel = lv_obj_create(screen);
     lv_obj_set_style_bg_color(modeAreaPanel, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
-    lv_obj_set_style_border_width(modeAreaPanel,0,0); // actually removed the border
+    lv_obj_set_style_border_width(modeAreaPanel, 0, 0); // actually removed the border
 
     lv_obj_set_layout(screen, LV_LAYOUT_GRID);
     lv_obj_set_layout(modeAreaPanel, LV_LAYOUT_GRID);
@@ -86,12 +96,19 @@ void cctScreen() {
 
     lv_obj_t* label = lv_label_create(modeAreaPanel);
     lv_label_set_text(label, "5600K");
-
+    lv_obj_set_style_text_font(label, font_large, 0);
 
     // intensity slider
     lv_obj_t* intensitySlider = lv_slider_create(screen);
     drawBrightnessSlider(intensitySlider);
 
+    lv_obj_t* intensitySliderLabel = lv_label_create(intensitySlider);
+    lv_label_set_text(intensitySliderLabel, "60%");
+    lv_obj_set_style_text_font(intensitySlider, font_large, 0);
+    lv_obj_set_style_text_color(intensitySlider, lv_color_hex(HEX_BACKGROUND_COLOR),0);
+    //lv_obj_center
+    lv_obj_align(intensitySliderLabel, LV_ALIGN_BOTTOM_MID, 0, 0);
+    //lv_obj_align_to(intensitySliderLabel, NULL, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
 
 
     // Top bar

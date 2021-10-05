@@ -12,6 +12,11 @@
 static const lv_font_t* font_large;
 static const lv_font_t* font_normal;
 
+extern "C" {
+    // used in c code, avoid name mangling
+    LV_IMG_DECLARE(cctarc);
+
+}
 void drawBrightnessSlider(lv_obj_t* sliderPointer) {
     lv_obj_remove_style_all(sliderPointer);
     const int16_t radius = 10;
@@ -65,34 +70,49 @@ void cctScreen() {
 
     lv_theme_default_init(NULL, lv_palette_main(LV_PALETTE_BLUE), lv_palette_main(LV_PALETTE_RED), 1, LV_FONT_DEFAULT);
     lv_obj_t* screen = lv_scr_act();
+    lv_obj_set_scrollbar_mode(screen, LV_SCROLLBAR_MODE_OFF);
     lv_obj_set_style_bg_color(screen, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
     //lv_obj_t* topBarPanel = lv_obj_create(screen);
 //lv_obj_t* labelBarPanel = lv_obj_create(screen);
     lv_obj_t* modeAreaPanel = lv_obj_create(screen);
+
+    lv_obj_t* encoderLabelAreaPanel = lv_obj_create(screen);
+
+
     lv_obj_set_style_bg_color(modeAreaPanel, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
     lv_obj_set_style_border_width(modeAreaPanel, 0, 0); // actually removed the border
 
+    lv_obj_set_style_bg_color(encoderLabelAreaPanel, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
+    lv_obj_set_style_border_width(encoderLabelAreaPanel, 0, 0); // actually removed the border
+
     lv_obj_set_layout(screen, LV_LAYOUT_GRID);
     lv_obj_set_layout(modeAreaPanel, LV_LAYOUT_GRID);
+    lv_obj_set_layout(encoderLabelAreaPanel, LV_LAYOUT_GRID);
 
 
-    lv_obj_t* arc = lv_arc_create(modeAreaPanel);
-    static lv_style_t style;
-    lv_style_init(&style);
 
-    lv_style_set_arc_color(&style, lv_palette_main(LV_PALETTE_AMBER));
+    //LV_IMG_DECLARE(cctarc);
+    lv_obj_t* img1 = lv_img_create(modeAreaPanel);
+    lv_img_set_src(img1, &cctarc);
+    //lv_img_set_zoom(img1, 160);
+    lv_img_set_size_mode(img1, LV_IMG_SIZE_MODE_REAL);
+    //lv_img_set_auto_size(img1, true);
+    //lv_obj_set_size(img1, 100, 100);
+    //lv_obj_center(img1);
 
-    lv_obj_remove_style(arc, NULL, LV_PART_INDICATOR);
-    lv_style_set_arc_width(&style, 4);
-    lv_obj_set_size(arc, 250, 250);
-    //lv_obj_add_event_cb(arc,)
+    //lv_obj_t* arc = lv_arc_create(modeAreaPanel);
+    //static lv_style_t style;
+    //lv_style_init(&style);
+    //lv_style_set_arc_color(&style, lv_palette_main(LV_PALETTE_AMBER));
+    //lv_obj_remove_style(arc, NULL, LV_PART_INDICATOR);
+    //lv_style_set_arc_width(&style, 4);
+    //lv_obj_set_size(arc, 250, 250);
+    ////lv_obj_add_event_cb(arc,)
+    //lv_arc_set_bg_angles(arc, 0, 360);
+    ////lv_arc_set_angles(obj, 90, 90);
+    //lv_obj_add_style(arc, &style, 0);
+    ////lv_obj_center(arc);
 
-    /*Create an object with the new style*/
-
-    lv_arc_set_bg_angles(arc, 0, 360);
-    //lv_arc_set_angles(obj, 90, 90);
-    lv_obj_add_style(arc, &style, 0);
-    //lv_obj_center(arc);
 
     lv_obj_t* label = lv_label_create(modeAreaPanel);
     lv_label_set_text(label, "5600K");
@@ -105,7 +125,7 @@ void cctScreen() {
     lv_obj_t* intensitySliderLabel = lv_label_create(intensitySlider);
     lv_label_set_text(intensitySliderLabel, "60%");
     lv_obj_set_style_text_font(intensitySlider, font_large, 0);
-    lv_obj_set_style_text_color(intensitySlider, lv_color_hex(HEX_BACKGROUND_COLOR),0);
+    lv_obj_set_style_text_color(intensitySlider, lv_color_hex(HEX_BACKGROUND_COLOR), 0);
     //lv_obj_center
     lv_obj_align(intensitySliderLabel, LV_ALIGN_BOTTOM_MID, 0, 0);
     //lv_obj_align_to(intensitySliderLabel, NULL, LV_ALIGN_OUT_BOTTOM_MID, 0, 0);
@@ -129,21 +149,37 @@ void cctScreen() {
     // Row 2 content row
     // Row 3 label row
 
+    // Encoder label row
+    lv_obj_t* encoderIntensityLabel = lv_label_create(encoderLabelAreaPanel);
+    lv_obj_t* encoderMiddleLabel = lv_label_create(encoderLabelAreaPanel);
+    lv_obj_t* encoderRightLabel = lv_label_create(encoderLabelAreaPanel);
+
+    lv_label_set_text(encoderIntensityLabel, "Intensity");
+    lv_label_set_text(encoderMiddleLabel, "CCT");
+    lv_label_set_text(encoderRightLabel, "+- Green");
+
+
+
+
+
     //Columns
     // Column 1 inteisty slider etc
     // Column 2 main content
     static lv_coord_t grid_main_col_dsc[] = { 75,175,350,200, LV_GRID_TEMPLATE_LAST };
-    static lv_coord_t grid_main_row_dsc[] = { 60,380, 40, LV_GRID_TEMPLATE_LAST };
+    static lv_coord_t grid_main_row_dsc[] = { 60,360, 60, LV_GRID_TEMPLATE_LAST };
 
     lv_obj_set_grid_dsc_array(screen, grid_main_col_dsc, grid_main_row_dsc);
     lv_obj_set_grid_cell(modeAreaPanel, LV_GRID_ALIGN_STRETCH, 1, 3, LV_GRID_ALIGN_STRETCH, 1, 1);
 
 
     static lv_coord_t grid_mode_col_dsc[] = { LV_GRID_FR(7),LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
-    static lv_coord_t grid_mode_row_dsc[] = { LV_GRID_FR(1),LV_GRID_FR(10),LV_GRID_FR(2), LV_GRID_TEMPLATE_LAST };
+    static lv_coord_t grid_mode_row_dsc[] = { LV_GRID_CONTENT,LV_GRID_CONTENT, LV_GRID_TEMPLATE_LAST };
     lv_obj_set_grid_dsc_array(modeAreaPanel, grid_mode_col_dsc, grid_mode_row_dsc);
-    lv_obj_set_grid_cell(arc, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_STRETCH, 1, 1);
-    lv_obj_set_grid_cell(label, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_END, 2, 1);
+
+    lv_obj_set_grid_cell(img1, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+
+    //lv_obj_set_grid_cell(arc, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_STRETCH, 1, 1);
+    lv_obj_set_grid_cell(label, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_CENTER, 1, 1);
 
 
 
@@ -154,14 +190,19 @@ void cctScreen() {
     lv_obj_set_grid_cell(presetLabels, LV_GRID_ALIGN_START, 3, 1, LV_GRID_ALIGN_END, 0, 1);
 
 
-
-
     lv_obj_set_grid_cell(intensitySlider, LV_GRID_ALIGN_CENTER, 0, 1, LV_GRID_ALIGN_CENTER, 1, 1);
 
+    //Encoder label bar
+    lv_obj_set_grid_cell(encoderLabelAreaPanel, LV_GRID_ALIGN_STRETCH, 0, 4, LV_GRID_ALIGN_STRETCH, 2, 1);
+
+    static lv_coord_t grid_encoder_bar_col_dsc[] = { LV_GRID_FR(1),LV_GRID_FR(1),LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
+    static lv_coord_t grid_encoder_bar_row_dsc[] = { LV_GRID_FR(1), LV_GRID_TEMPLATE_LAST };
+    lv_obj_set_grid_dsc_array(encoderLabelAreaPanel, grid_encoder_bar_col_dsc, grid_encoder_bar_row_dsc);
 
 
-
-
+    lv_obj_set_grid_cell(encoderIntensityLabel, LV_GRID_ALIGN_START, 0, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(encoderMiddleLabel, LV_GRID_ALIGN_CENTER, 1, 1, LV_GRID_ALIGN_CENTER, 0, 1);
+    lv_obj_set_grid_cell(encoderRightLabel, LV_GRID_ALIGN_END, 2, 1, LV_GRID_ALIGN_CENTER, 0, 1);
 
 
 }

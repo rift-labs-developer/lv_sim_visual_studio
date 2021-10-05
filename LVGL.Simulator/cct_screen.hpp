@@ -95,7 +95,7 @@ void cctScreen() {
     lv_obj_t* img1 = lv_img_create(modeAreaPanel);
     lv_img_set_src(img1, &cctarc);
     //lv_img_set_zoom(img1, 160);
-    lv_img_set_size_mode(img1, LV_IMG_SIZE_MODE_REAL);
+    //lv_img_set_size_mode(img1, LV_IMG_SIZE_MODE_REAL);
     //lv_img_set_auto_size(img1, true);
     //lv_obj_set_size(img1, 100, 100);
     //lv_obj_center(img1);
